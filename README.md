@@ -66,7 +66,7 @@
 No terminal, clone o projeto: 
 
 ```
-git clone https://github.com/AndersonD-art/my_notes.git
+git clone https://github.com/AndersonD-art/NLW_Flutter.git
 ```
 ---
 
