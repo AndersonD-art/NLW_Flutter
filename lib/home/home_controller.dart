@@ -4,14 +4,20 @@ import 'package:dev_quiz/shared/models/awnser_model.dart';
 import 'package:dev_quiz/shared/models/question_model.dart';
 import 'package:dev_quiz/shared/models/quiz_model.dart';
 import 'package:dev_quiz/shared/models/user_model.dart';
+import 'package:flutter/cupertino.dart';
 
 class HomeController {
-  var state = HomeState.empty;
+  final stateNotifier = ValueNotifier<HomeState>(HomeState.empty);
+  set state(HomeState state) => stateNotifier.value = state;
+  HomeState get state => stateNotifier.value;
 
   UserModel? user;
   List<QuizModel>? quizzes;
 
-  void getUser() {
+  void getUser() async {
+    state = HomeState.loading;
+    await Future.delayed(Duration(seconds: 2));
+    state = HomeState.success;
     user = UserModel(
       name: "AndersonDart",
       pthotoUrl:
@@ -19,23 +25,37 @@ class HomeController {
     );
   }
 
-  void getQuizzes() {
+  void getQuizzes() async {
+    state = HomeState.loading;
+    await Future.delayed(Duration(seconds: 2));
+    state = HomeState.success;
     quizzes = [
       QuizModel(
-          title: "NLW 5 Flutter",
-          questions: [
-            QuestionModel(
-              title: "Está curtindo o Flutter?",
-              awnsers: [
-                AwnserModel(title: "Estou Curtindo"),
-                AwnserModel(title: "Estou Amando", isRight: true),
-                AwnserModel(title: "Estou Admirando"),
-                AwnserModel(title: "Estou Odiando"),
-              ],
-            ),
-          ],
-          imagem: AppImages.blocks,
-          level: Level.facil)
+        title: "NLW 5 Flutter",
+        questions: [
+          QuestionModel(
+            title: "Está curtindo o Flutter?",
+            awnsers: [
+              AwnserModel(title: "Estou Curtindo"),
+              AwnserModel(title: "Estou Amando", isRight: true),
+              AwnserModel(title: "Estou Admirando"),
+              AwnserModel(title: "Estou Odiando"),
+            ],
+          ),
+          QuestionModel(
+            title: "Está curtindo o Dart?",
+            awnsers: [
+              AwnserModel(title: "Estou Curtindo"),
+              AwnserModel(title: "Estou Amando", isRight: true),
+              AwnserModel(title: "Estou Admirando"),
+              AwnserModel(title: "Estou Odiando"),
+            ],
+          ),
+        ],
+        imagem: AppImages.blocks,
+        level: Level.facil,
+        questionAnswered: 1,
+      )
     ];
   }
 }
