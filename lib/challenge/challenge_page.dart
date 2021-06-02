@@ -1,4 +1,5 @@
 import 'package:dev_quiz/challenge/challenge_controller.dart';
+import 'package:dev_quiz/challenge/widgets/awnser/awnser_widget.dart';
 import 'package:dev_quiz/challenge/widgets/next_button/next_button-widget.dart';
 import 'package:dev_quiz/challenge/widgets/question_indicator/question_indicator_widget.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_controller.dart';
@@ -23,6 +24,7 @@ class _ChallengePageState extends State<ChallengePage> {
     pageController.addListener(() {
       controller.currentPage = pageController.page!.toInt() + 1;
     });
+
     super.initState();
   }
 
@@ -86,7 +88,6 @@ class _ChallengePageState extends State<ChallengePage> {
                   onTap: () {
                     setState(() {
                       confirmQuestion.isConfirm.value = true;
-                      //confirmQuestion.isConfirm.notifyListeners();
                     });
                   },
                 ),

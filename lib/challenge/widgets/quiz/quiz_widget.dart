@@ -39,10 +39,11 @@ class _QuizWidgetState extends State<QuizWidget> {
           for (var i = 0; i < widget.question.awnsers.length; i++)
             AwnserWidget(
               anwser: awnser(i),
-              isConfirm: confirmQuestion.isConfirm.value,
+              //isConfirm: confirmQuestion.isConfirm.value,
               isSelected: indexSelected == i,
               onTap: () {
                 indexSelected = i;
+                confirmQuestion.indexSelected = indexSelected;
                 setState(() {});
               },
             ),
