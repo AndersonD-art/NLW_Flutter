@@ -1,6 +1,7 @@
 import 'package:dev_quiz/challenge/challenge_controller.dart';
 import 'package:dev_quiz/challenge/widgets/next_button/next_button-widget.dart';
 import 'package:dev_quiz/challenge/widgets/question_indicator/question_indicator_widget.dart';
+import 'package:dev_quiz/challenge/widgets/quiz/quiz_controller.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_widget.dart';
 import 'package:dev_quiz/shared/models/question_model.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +16,12 @@ class ChallengePage extends StatefulWidget {
 
 class _ChallengePageState extends State<ChallengePage> {
   final controller = ChallengeController();
+  final confirmQuestion = QuizController();
   final pageController = PageController();
   @override
   void initState() {
-    controller.currenPageNotifier.addListener(() {
-      setState(() {});
-    });
     pageController.addListener(() {
-      controller.currentPage = pageController.page!.toInt();
+      controller.currentPage = pageController.page!.toInt() + 1;
     });
     super.initState();
   }
@@ -44,15 +43,19 @@ class _ChallengePageState extends State<ChallengePage> {
                 },
                 icon: Icon(Icons.close),
               ),
-              QuestionIndicator(
-                currentPage: controller.currentPage,
-                length: widget.questions.length,
+              ValueListenableBuilder<int>(
+                valueListenable: controller.currenPageNotifier,
+                builder: (context, value, _) => QuestionIndicator(
+                  currentPage: value,
+                  length: widget.questions.length,
+                ),
               ),
             ],
           ),
         ),
       ),
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: pageController,
         children: widget.questions.map((e) => QuizWidget(question: e)).toList(),
       ),
@@ -65,8 +68,13 @@ class _ChallengePageState extends State<ChallengePage> {
             children: [
               Expanded(
                 child: NextButtonWidget.white(
-                  label: "Fácil",
-                  onTap: () {},
+                  label: "Pular",
+                  onTap: () {
+                    pageController.nextPage(
+                      duration: Duration(milliseconds: 100),
+                      curve: Curves.linear,
+                    );
+                  },
                 ),
               ),
               SizedBox(
@@ -75,7 +83,12 @@ class _ChallengePageState extends State<ChallengePage> {
               Expanded(
                 child: NextButtonWidget.green(
                   label: "Confirmar",
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      confirmQuestion.isConfirm.value = true;
+                      //confirmQuestion.isConfirm.notifyListeners();
+                    });
+                  },
                 ),
               ),
             ],
