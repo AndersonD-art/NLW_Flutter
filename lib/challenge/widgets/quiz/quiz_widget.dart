@@ -1,4 +1,5 @@
 import 'package:dev_quiz/challenge/widgets/awnser/awnser_widget.dart';
+import 'package:dev_quiz/challenge/widgets/next_button/next_button-widget.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_controller.dart';
 import 'package:dev_quiz/core/app_text_styles.dart';
 import 'package:dev_quiz/shared/models/awnser_model.dart';
@@ -39,14 +40,46 @@ class _QuizWidgetState extends State<QuizWidget> {
           for (var i = 0; i < widget.question.awnsers.length; i++)
             AwnserWidget(
               anwser: awnser(i),
-              //isConfirm: confirmQuestion.isConfirm.value,
+              disabled: indexSelected != -1,
               isSelected: indexSelected == i,
+              isConfirm: false,
               onTap: () {
+                confirmQuestion.isConfirm.value = true;
+                confirmQuestion.title = awnser(i).title;
+                confirmQuestion.isRight = awnser(i).isRight;
                 indexSelected = i;
                 confirmQuestion.indexSelected = indexSelected;
                 setState(() {});
               },
             ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: NextButtonWidget.green(
+                  label: "Confirmar",
+                  onTap: () {
+                    confirmQuestion.isConfirm.value = true;
+                    setState(() {
+                      AwnserWidget(
+                        anwser: AwnserModel(
+                            title: confirmQuestion.title,
+                            isRight: confirmQuestion.isRight),
+                        isConfirm: true,
+                        disabled: indexSelected != -1,
+                        isSelected: true,
+                        onTap: () {
+                          indexSelected = confirmQuestion.indexSelected;
+                        },
+                      );
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

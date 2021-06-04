@@ -1,5 +1,6 @@
-import 'package:dev_quiz/challenge/widgets/quiz/quiz_controller.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dev_quiz/challenge/widgets/quiz/quiz_controller.dart';
 import 'package:dev_quiz/core/app_colors.dart';
 import 'package:dev_quiz/core/app_text_styles.dart';
 import 'package:dev_quiz/shared/models/awnser_model.dart';
@@ -8,14 +9,16 @@ class AwnserWidget extends StatefulWidget {
   final AwnserModel anwser;
   final bool isSelected;
   final VoidCallback onTap;
-  //final bool isConfirm;
+  final bool disabled;
+  final bool isConfirm;
 
   const AwnserWidget({
     Key? key,
     required this.anwser,
     this.isSelected = false,
-    //this.isConfirm = false,
     required this.onTap,
+    this.disabled = false,
+    required this.isConfirm,
   }) : super(key: key);
 
   @override
@@ -42,122 +45,22 @@ class _AwnserWidgetState extends State<AwnserWidget> {
   IconData get _selectedIconRight =>
       widget.anwser.isRight ? Icons.check : Icons.close;
 
-  final QuizController confirmQuestion = QuizController();
+  final confirmQuestion = QuizController();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      //child: IgnorePointer(
+      //ignoring: widget.disabled,
       child: GestureDetector(
         onTap: widget.onTap,
-        child: ValueListenableBuilder(
+        child: ValueListenableBuilder<bool>(
           valueListenable: confirmQuestion.isConfirm,
-          builder: (context, value, _) {
-            return confirmQuestion.isConfirm.value
-                ? Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: widget.isSelected
-                          ? _selectedColorCardRight
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.fromBorderSide(
-                        BorderSide(
-                            color: widget.isSelected
-                                ? _selectedBorderCardRight
-                                : AppColors.border),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            widget.anwser.title,
-                            style: widget.isSelected
-                                ? _selectedTextStyleRight
-                                : AppTextStyles.body,
-                          ),
-                        ),
-                        Container(
-                          height: 24,
-                          width: 24,
-                          decoration: BoxDecoration(
-                            color: widget.isSelected
-                                ? _selectedColorRight
-                                : AppColors.white,
-                            borderRadius: BorderRadius.circular(500),
-                            border: Border.fromBorderSide(
-                              BorderSide(
-                                  color: widget.isSelected
-                                      ? _selectedBorderRight
-                                      : AppColors.border),
-                            ),
-                          ),
-                          child: widget.isSelected
-                              ? Icon(
-                                  _selectedIconRight,
-                                  color: AppColors.white,
-                                  size: 16,
-                                )
-                              : null,
-                        ),
-                      ],
-                    ),
-                  )
-                : Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color:
-                          widget.isSelected ? Colors.yellow[50] : Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.fromBorderSide(
-                        BorderSide(
-                            color: widget.isSelected
-                                ? Colors.yellow
-                                : AppColors.border),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            widget.anwser.title,
-                            style: widget.isSelected
-                                ? TextStyle(color: Colors.blue)
-                                : AppTextStyles.body,
-                          ),
-                        ),
-                        Container(
-                          height: 24,
-                          width: 24,
-                          decoration: BoxDecoration(
-                            color: widget.isSelected
-                                ? Colors.grey
-                                : AppColors.white,
-                            borderRadius: BorderRadius.circular(500),
-                            border: Border.fromBorderSide(
-                              BorderSide(
-                                  color: widget.isSelected
-                                      ? Colors.grey
-                                      : AppColors.border),
-                            ),
-                          ),
-                          child: widget.isSelected
-                              ? Icon(
-                                  Icons.check,
-                                  color: AppColors.white,
-                                  size: 16,
-                                )
-                              : null,
-                        ),
-                      ],
-                    ),
-                  );
-          },
-          /* child: confirmQuestion.isConfirm.value
-              ? Container(
+          builder: (context, bool value, _) => Column(
+            children: [
+              if (widget.isConfirm == true || value == true)
+                Container(
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: widget.isSelected
@@ -207,8 +110,9 @@ class _AwnserWidgetState extends State<AwnserWidget> {
                       ),
                     ],
                   ),
-                )
-              : Container(
+                ),
+              if (widget.isConfirm == false)
+                Container(
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: widget.isSelected ? Colors.yellow[50] : Colors.white,
@@ -255,8 +159,11 @@ class _AwnserWidgetState extends State<AwnserWidget> {
                       ),
                     ],
                   ),
-                ), */
+                ),
+            ],
+          ),
         ),
+        //),
       ),
     );
   }

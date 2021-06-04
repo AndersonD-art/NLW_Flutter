@@ -4,6 +4,7 @@ import 'package:dev_quiz/challenge/widgets/next_button/next_button-widget.dart';
 import 'package:dev_quiz/challenge/widgets/question_indicator/question_indicator_widget.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_controller.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_widget.dart';
+import 'package:dev_quiz/shared/models/awnser_model.dart';
 import 'package:dev_quiz/shared/models/question_model.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,9 @@ class _ChallengePageState extends State<ChallengePage> {
   final pageController = PageController();
   @override
   void initState() {
+    confirmQuestion.isConfirm.addListener(() {
+      setState(() {});
+    });
     pageController.addListener(() {
       controller.currentPage = pageController.page!.toInt() + 1;
     });
@@ -65,35 +69,46 @@ class _ChallengePageState extends State<ChallengePage> {
         bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Expanded(
-                child: NextButtonWidget.white(
-                  label: "Pular",
-                  onTap: () {
-                    pageController.nextPage(
-                      duration: Duration(milliseconds: 100),
-                      curve: Curves.linear,
-                    );
-                  },
-                ),
-              ),
-              SizedBox(
-                width: 7,
-              ),
-              Expanded(
-                child: NextButtonWidget.green(
-                  label: "Confirmar",
-                  onTap: () {
-                    setState(() {
-                      confirmQuestion.isConfirm.value = true;
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
+          child: ValueListenableBuilder(
+              valueListenable: controller.currenPageNotifier,
+              builder: (context, value, _) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      if (value == widget.questions.length)
+                        Expanded(
+                          child: NextButtonWidget.white(
+                            label: "Finalizar",
+                            onTap: () {
+                              pageController.nextPage(
+                                duration: Duration(milliseconds: 100),
+                                curve: Curves.linear,
+                              );
+                            },
+                          ),
+                        ),
+                      if (value != widget.questions.length)
+                        Expanded(
+                          child: NextButtonWidget.white(
+                            label: "Proximo",
+                            onTap: () {
+                              pageController.nextPage(
+                                duration: Duration(milliseconds: 100),
+                                curve: Curves.linear,
+                              );
+                            },
+                          ),
+                        ),
+                      SizedBox(
+                        width: 7,
+                      ),
+                      Expanded(
+                        child: NextButtonWidget.green(
+                          label: "Confirmar",
+                          onTap: () {},
+                        ),
+                      ),
+                    ],
+                  )),
         ),
       ),
     );

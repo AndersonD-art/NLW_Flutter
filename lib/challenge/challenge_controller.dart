@@ -1,6 +1,6 @@
 //CurrentPage
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ChallengeController {
   final currenPageNotifier = ValueNotifier<int>(1);
