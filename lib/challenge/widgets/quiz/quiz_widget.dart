@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:dev_quiz/challenge/widgets/awnser/awnser_widget.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_controller.dart';
 import 'package:dev_quiz/core/app_text_styles.dart';
@@ -8,12 +7,12 @@ import 'package:dev_quiz/shared/models/question_model.dart';
 
 class QuizWidget extends StatefulWidget {
   final QuestionModel question;
-  final VoidCallback onChance;
+  final ValueChanged<bool> onSelect;
 
   const QuizWidget({
     Key? key,
     required this.question,
-    required this.onChance,
+    required this.onSelect,
   }) : super(key: key);
 
   @override
@@ -44,11 +43,12 @@ class _QuizWidgetState extends State<QuizWidget> {
               anwser: awnser(i),
               disabled: indexSelected != -1,
               isSelected: indexSelected == i,
-              onTap: () {
+              onTap: (value) {
                 indexSelected = i;
                 setState(() {});
-                Future.delayed(Duration(seconds: 1))
-                    .then((value) => widget.onChance());
+                Future.delayed(Duration(seconds: 1)).then(
+                  (_) => widget.onSelect(value),
+                );
               },
             ),
           /*  SizedBox(

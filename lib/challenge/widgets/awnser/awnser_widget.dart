@@ -6,7 +6,7 @@ import 'package:dev_quiz/shared/models/awnser_model.dart';
 class AwnserWidget extends StatefulWidget {
   final AwnserModel anwser;
   final bool isSelected;
-  final VoidCallback onTap;
+  final ValueChanged<bool> onTap;
   final bool disabled;
 
   const AwnserWidget({
@@ -48,7 +48,9 @@ class _AwnserWidgetState extends State<AwnserWidget> {
       child: IgnorePointer(
         ignoring: widget.disabled,
         child: GestureDetector(
-          onTap: widget.onTap,
+          onTap: () {
+            widget.onTap(widget.anwser.isRight);
+          },
           child: Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
