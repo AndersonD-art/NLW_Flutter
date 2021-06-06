@@ -1,17 +1,19 @@
+import 'package:flutter/material.dart';
+
 import 'package:dev_quiz/challenge/widgets/awnser/awnser_widget.dart';
-import 'package:dev_quiz/challenge/widgets/next_button/next_button-widget.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_controller.dart';
 import 'package:dev_quiz/core/app_text_styles.dart';
 import 'package:dev_quiz/shared/models/awnser_model.dart';
 import 'package:dev_quiz/shared/models/question_model.dart';
-import 'package:flutter/material.dart';
 
 class QuizWidget extends StatefulWidget {
   final QuestionModel question;
+  final VoidCallback onChance;
 
   const QuizWidget({
     Key? key,
     required this.question,
+    required this.onChance,
   }) : super(key: key);
 
   @override
@@ -42,20 +44,17 @@ class _QuizWidgetState extends State<QuizWidget> {
               anwser: awnser(i),
               disabled: indexSelected != -1,
               isSelected: indexSelected == i,
-              isConfirm: false,
               onTap: () {
-                confirmQuestion.isConfirm.value = true;
-                confirmQuestion.title = awnser(i).title;
-                confirmQuestion.isRight = awnser(i).isRight;
                 indexSelected = i;
-                confirmQuestion.indexSelected = indexSelected;
                 setState(() {});
+                Future.delayed(Duration(seconds: 1))
+                    .then((value) => widget.onChance());
               },
             ),
-          SizedBox(
+          /*  SizedBox(
             height: 10,
-          ),
-          Row(
+          ), */
+          /* Row(
             children: [
               Expanded(
                 child: NextButtonWidget.green(
@@ -79,7 +78,7 @@ class _QuizWidgetState extends State<QuizWidget> {
                 ),
               ),
             ],
-          ),
+          ), */
         ],
       ),
     );

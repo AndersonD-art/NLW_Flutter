@@ -1,17 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:dev_quiz/challenge/challenge_controller.dart';
-import 'package:dev_quiz/challenge/widgets/awnser/awnser_widget.dart';
 import 'package:dev_quiz/challenge/widgets/next_button/next_button-widget.dart';
 import 'package:dev_quiz/challenge/widgets/question_indicator/question_indicator_widget.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_controller.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_widget.dart';
-import 'package:dev_quiz/shared/models/awnser_model.dart';
+import 'package:dev_quiz/result/result_page.dart';
 import 'package:dev_quiz/shared/models/question_model.dart';
-import 'package:flutter/material.dart';
 
 class ChallengePage extends StatefulWidget {
   final List<QuestionModel> questions;
+  final String title;
 
-  const ChallengePage({Key? key, required this.questions}) : super(key: key);
+  const ChallengePage({
+    Key? key,
+    required this.questions,
+    required this.title,
+  }) : super(key: key);
   @override
   _ChallengePageState createState() => _ChallengePageState();
 }
@@ -30,6 +34,14 @@ class _ChallengePageState extends State<ChallengePage> {
     });
 
     super.initState();
+  }
+
+  void nextPage() {
+    if (controller.currentPage < widget.questions.length)
+      pageController.nextPage(
+        duration: Duration(milliseconds: 100),
+        curve: Curves.linear,
+      );
   }
 
   @override
@@ -63,7 +75,14 @@ class _ChallengePageState extends State<ChallengePage> {
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: pageController,
-        children: widget.questions.map((e) => QuizWidget(question: e)).toList(),
+        children: widget.questions
+            .map(
+              (e) => QuizWidget(
+                question: e,
+                onChance: nextPage,
+              ),
+            )
+            .toList(),
       ),
       bottomNavigationBar: SafeArea(
         bottom: true,
@@ -76,12 +95,17 @@ class _ChallengePageState extends State<ChallengePage> {
                     children: [
                       if (value == widget.questions.length)
                         Expanded(
-                          child: NextButtonWidget.white(
+                          child: NextButtonWidget.green(
                             label: "Finalizar",
                             onTap: () {
-                              pageController.nextPage(
-                                duration: Duration(milliseconds: 100),
-                                curve: Curves.linear,
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ResultPage(
+                                    title: widget.title,
+                                    length: widget.questions.length,
+                                  ),
+                                ),
                               );
                             },
                           ),
@@ -91,14 +115,11 @@ class _ChallengePageState extends State<ChallengePage> {
                           child: NextButtonWidget.white(
                             label: "Proximo",
                             onTap: () {
-                              pageController.nextPage(
-                                duration: Duration(milliseconds: 100),
-                                curve: Curves.linear,
-                              );
+                              nextPage();
                             },
                           ),
                         ),
-                      SizedBox(
+                      /* SizedBox(
                         width: 7,
                       ),
                       Expanded(
@@ -106,7 +127,7 @@ class _ChallengePageState extends State<ChallengePage> {
                           label: "Confirmar",
                           onTap: () {},
                         ),
-                      ),
+                      ), */
                     ],
                   )),
         ),
