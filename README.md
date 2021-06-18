@@ -47,7 +47,11 @@
   
 ---
 
-## 🎨 Layout 
+## 🎨 Layout
+
+<p align="center">
+  <img alt="Splash" title="#Splash" src="https://user-images.githubusercontent.com/77983152/122609602-a5a7cd00-d054-11eb-9ebd-980f5fd92d98.png" width="200px"> 
+</p>
 
 ---
 
