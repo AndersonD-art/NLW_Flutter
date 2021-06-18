@@ -5,10 +5,10 @@
   <img src="https://img.shields.io/static/v1?label=flutter&message=framework&color=blue&style=for-the-badge&logo=FLUTTER"/>  
   <img src="http://img.shields.io/static/v1?label=License&message=MIT&color=green&style=for-the-badge"/>   
   <img src="http://img.shields.io/static/v1?label=TESTES&message=%3E100&color=GREEN&style=for-the-badge"/>  
-   <img src="http://img.shields.io/static/v1?label=STATUS&message=CONSTRUINDO&color=yellow&style=for-the-badge"/>   
+  <img src="http://img.shields.io/static/v1?label=STATUS&message=CONCLUIDO&color=GREEN&style=for-the-badge"/>   
 </p>
 
-> Status do Projeto: 🚧 (Em Construção)
+> Status do Projeto: :heavy_check_mark: (concluido)
 ---
 
 ### 📖 Tópicos 
